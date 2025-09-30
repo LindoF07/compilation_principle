@@ -10,7 +10,6 @@ init_node(...)	构造函数，用于创建和初始化节点的数据和下一�
 get_data(), get_next(), set_next(...)
 get_data（）、get_next（）、set_next（...）	提供对节点内部数据和指针的访问和修改接口。
 
-导出到 Google 表格
 2. Queue 类 (队列实现)
 这个类使用 Node 来实现队列的 FIFO (First-In, First-Out，先进先出) 行为。
 
@@ -24,22 +23,13 @@ dequeue() : Int	出队。移除并返回链表队头 (front) 的元素。如果�
 peek() : Int	查看队头。返回队头元素的值，但不将其移除。
 print_queue()	遍历并打印队列中的所有元素。
 
-导出到 Google 表格
 3. Main 类 (测试程序)
 Main 类中的 main() 方法演示了 Queue 类的所有功能，包括：
-
 初始化和测试空队列。
-
 连续进行多次 入队 (enqueue(10), enqueue(20), enqueue(30))。
-
 测试 查看队头 (peek)。
-
 测试 出队 (dequeue) 并打印队列状态。
-
 再次 入队 新元素。
-
 循环 出队 直到队列清空。
-
 测试对空队列执行 出队 时的错误处理机制。
 
-总而言之，这段代码提供了一个高效且功能完整的链式队列数据结构的实现，并附带了全面的使用示例。
