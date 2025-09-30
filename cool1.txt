@@ -1,0 +1,159 @@
+class Node {
+    data : Int;    
+    next : Node;   
+    
+    init_node(d : Int, n : Node) : Node {
+        {
+            data <- d;
+            next <- n;
+            self;
+        }
+    };
+    
+    get_data() : Int { data };
+    get_next() : Node { next };
+    
+    set_next(n : Node) : Node {
+        {
+            next <- n;
+            self;
+        }
+    };
+};
+
+class Queue {
+    front : Node;  
+    rear : Node;   
+    
+    init_queue() : Queue {
+        {
+            front <- void;
+            rear <- void;
+            self;
+        }
+    };
+    
+    is_empty() : Bool {
+        isvoid front
+    };
+    
+    enqueue(item : Int) : Queue {
+        let new_node : Node <- (new Node).init_node(item, void) in
+            if self.is_empty() then
+                {
+                    front <- new_node;
+                    rear <- new_node;
+                }
+            else
+                {
+                    rear.set_next(new_node);
+                    rear <- new_node;
+                }
+            fi;
+        self  -- 返回队列本身，方便链式调用
+    };
+    
+    dequeue() : Int {
+        if self.is_empty() then
+            {
+                (new IO).out_string("Error: Dequeue on empty queue.\n");
+                0;
+            }
+        else
+            let result : Int <- front.get_data() in
+            {
+                front <- front.get_next();
+                if isvoid front then
+                    rear <- void
+                fi;
+                result;
+            }
+        fi
+    };
+    
+    peek() : Int {
+        if self.is_empty() then
+            {
+                (new IO).out_string("Error: Peek on empty queue.\n");
+                0;
+            }
+        else
+            front.get_data()
+        fi
+    };
+    
+    print_queue() : Object {
+        if self.is_empty() then
+            (new IO).out_string("Queue is empty.\n")
+        else
+            let curr : Node <- front,
+                io : IO <- new IO
+            in
+            {
+                io.out_string("Queue: [");
+                while (not isvoid curr) loop
+                    {
+                        io.out_int(curr.get_data());
+                        curr <- curr.get_next();
+                        if not isvoid curr then
+                            io.out_string(", ")
+                        fi;
+                    }
+                pool;
+                io.out_string("]\n");
+            }
+        fi
+    };
+};
+
+class Main {
+    io : IO <- new IO;
+    
+    main() : Object {
+        {
+            io.out_string("=== 队列测试程序 ===\n");
+            
+            let queue : Queue <- (new Queue).init_queue() in
+            {
+                io.out_string("\n1. 测试空队列:\n");
+                queue.print_queue();
+                io.out_string("队列是否为空: ");
+                if queue.is_empty() then io.out_string("是\n") else io.out_string("否\n") fi;
+                
+                io.out_string("\n2. 入队元素 10, 20, 30:\n");
+                queue.enqueue(10).enqueue(20).enqueue(30);
+                queue.print_queue();
+                
+                io.out_string("\n3. 查看队头元素: ");
+                io.out_int(queue.peek());
+                io.out_string("\n");
+                
+                io.out_string("\n4. 出队操作:\n");
+                io.out_string("出队元素: "); io.out_int(queue.dequeue()); io.out_string("\n");
+                queue.print_queue();
+                
+                io.out_string("再次出队元素: "); io.out_int(queue.dequeue()); io.out_string("\n");
+                queue.print_queue();
+                
+                io.out_string("\n5. 再次入队元素 40, 50:\n");
+                queue.enqueue(40).enqueue(50);
+                queue.print_queue();
+                
+                io.out_string("\n6. 继续出队直到队列为空:\n");
+                while (not queue.is_empty()) loop
+                    {
+                        io.out_string("出队元素: ");
+                        io.out_int(queue.dequeue());
+                        io.out_string("\n");
+                        queue.print_queue();
+                    }
+                pool;
+                
+                io.out_string("\n7. 测试对空队列的出队操作:\n");
+                queue.dequeue();
+            };
+            
+            io.out_string("\n=== 测试完成 ===\n");
+        }
+    };
+};
